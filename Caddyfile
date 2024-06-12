@@ -1,0 +1,23 @@
+http://client.happyflowlogistics.com {
+  reverse_proxy https://v5.mintsoft.co.uk {
+    transport http {
+      tls_insecure_skip_verify
+    }
+    header_up Host client.happyflowlogistics.com
+    header_up X-Forwarded-Host client.happyflowlogistics.com
+  }
+}
+
+http://hfl-proxy-client.fly.dev {
+        respond "Happy fly!"
+}
+
+http://client.hfl.felip.se {
+  reverse_proxy https://v5.mintsoft.co.uk {
+    transport http {
+      tls_insecure_skip_verify
+    }
+    header_up Host client.happyflowlogistics.com
+    header_up X-Forwarded-Host client.happyflowlogistics.com
+  }
+}
