@@ -1,6 +1,8 @@
 http://client.happyflowlogistics.com {
   reverse_proxy https://v5.mintsoft.co.uk {
     transport http {
+      resolvers 1.1.1.1
+      dial_timeout 3s
       tls_insecure_skip_verify
     }
     header_up Host client.happyflowlogistics.com
@@ -15,6 +17,8 @@ http://hfl-proxy-client.fly.dev {
 http://client.hfl.felip.se {
   reverse_proxy https://v5.mintsoft.co.uk {
     transport http {
+      resolvers 1.1.1.1
+      dial_timeout 3s
       tls_insecure_skip_verify
     }
     header_up Host client.happyflowlogistics.com
