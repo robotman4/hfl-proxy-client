@@ -23,5 +23,14 @@ http://client.hfl.felip.se {
     }
     header_up Host client.happyflowlogistics.com
     header_up X-Forwarded-Host client.happyflowlogistics.com
+
+    @upstream_error status 5xx
+    handle_response @upstream_error {
+      respond "Proxy got your request, but the backend did not work. Got: {rp.status_code} {rp.status_text}" {rp.status_code}
+    }
+  }
+
+  handle_errors {
+    respond "Proxy got your request, but the backend did not work. Got: {err.message}" {err.status_code}
   }
 }
