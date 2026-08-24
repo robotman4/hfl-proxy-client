@@ -1,4 +1,6 @@
 http://client.happyflowlogistics.com {
+  log
+
   reverse_proxy https://v5.mintsoft.co.uk {
     transport http {
       resolvers 1.1.1.1
@@ -11,21 +13,23 @@ http://client.happyflowlogistics.com {
 
     @upstream_error status 5xx
     handle_response @upstream_error {
-      respond "Proxy ({env.FLY_REGION}/{env.FLY_MACHINE_ID}) got your request, but the backend did not work. Got: {rp.status_code} with message: {rp.status_text}" {rp.status_code}
+      respond "[BACKEND] proxy ({env.FLY_REGION}/{env.FLY_MACHINE_ID}) reached mintsoft fine, but mintsoft returned {rp.status_code} {rp.status_text}" {rp.status_code}
     }
   }
 
   handle_errors {
-    respond "Proxy ({env.FLY_REGION}/{env.FLY_MACHINE_ID}) got your request, but the backend did not work. Got: {err.status_code} with message: {err.message}" {err.status_code}
+    respond "[PROXY] proxy ({env.FLY_REGION}/{env.FLY_MACHINE_ID}) could not reach mintsoft: {err.status_code} {err.message}" {err.status_code}
   }
 }
 
 http://hfl-proxy-client.fly.dev {
   header X-Fly-Region {env.FLY_REGION}
-  respond "Hello from {env.FLY_REGION}!" 200
+  respond "Hello from {env.FLY_MACHINE_ID} in {env.FLY_REGION}!" 200
 }
 
 http://client.hfl.felip.se {
+  log
+
   reverse_proxy https://v5.mintsoft.co.uk {
     transport http {
       resolvers 1.1.1.1
@@ -38,11 +42,11 @@ http://client.hfl.felip.se {
 
     @upstream_error status 5xx
     handle_response @upstream_error {
-      respond "Proxy ({env.FLY_REGION}/{env.FLY_MACHINE_ID}) got your request, but the backend did not work. Got: {rp.status_code} with message: {rp.status_text}" {rp.status_code}
+      respond "[BACKEND] proxy ({env.FLY_REGION}/{env.FLY_MACHINE_ID}) reached mintsoft fine, but mintsoft returned {rp.status_code} {rp.status_text}" {rp.status_code}
     }
   }
 
   handle_errors {
-    respond "Proxy ({env.FLY_REGION}/{env.FLY_MACHINE_ID}) got your request, but the backend did not work. Got: {err.status_code} with message: {err.message}" {err.status_code}
+    respond "[PROXY] proxy ({env.FLY_REGION}/{env.FLY_MACHINE_ID}) could not reach mintsoft: {err.status_code} {err.message}" {err.status_code}
   }
 }
