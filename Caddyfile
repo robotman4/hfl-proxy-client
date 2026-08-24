@@ -11,7 +11,8 @@ http://client.happyflowlogistics.com {
 }
 
 http://hfl-proxy-client.fly.dev {
-        respond "Happy fly!"
+  header X-Fly-Region {env.FLY_REGION}
+  respond "Hello from {env.FLY_REGION}!" 200
 }
 
 http://client.hfl.felip.se {

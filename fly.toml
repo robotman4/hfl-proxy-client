@@ -6,6 +6,14 @@
 app = 'hfl-proxy-client'
 primary_region = 'lhr'
 
+[[regions]]
+  region = 'lhr'
+  processes = ['app']
+
+[[regions]]
+  region = 'arn'
+  processes = ['app']
+
 [build]
   dockerfile = 'Dockerfile'
 
