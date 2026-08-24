@@ -7,12 +7,37 @@ http://client.happyflowlogistics.com {
     }
     header_up Host client.happyflowlogistics.com
     header_up X-Forwarded-Host client.happyflowlogistics.com
+
+    @upstream_error status 5xx
+    handle_response @upstream_error {
+      respond "Proxy got your request, but the backend did not work. Got: {rp.status_code} {rp.status_text}" {rp.status_code}
+    }
+  }
+
+  handle_errors {
+    respond "Proxy got your request, but the backend did not work. Got: {err.message}" {err.status_code}
   }
 }
 
 http://hfl-proxy-client.fly.dev {
   header X-Fly-Region {env.FLY_REGION}
-  respond "Hello from {env.FLY_REGION}!" 200
+
+  # Fly health check hits this: proves this machine can actually
+  # reach the upstream, not just that Caddy is alive.
+  handle /fly-upstream-check {
+    reverse_proxy https://v5.mintsoft.co.uk {
+      transport http {
+        resolvers 1.1.1.1
+        dial_timeout 3s
+        tls_insecure_skip_verify
+      }
+      header_up Host client.happyflowlogistics.com
+    }
+  }
+
+  handle {
+    respond "Hello from {env.FLY_REGION}!" 200
+  }
 }
 
 http://client.hfl.felip.se {
