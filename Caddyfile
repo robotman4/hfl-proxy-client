@@ -6,7 +6,6 @@ http://client.happyflowlogistics.com {
       resolvers 1.1.1.1
       dial_timeout 3s
       tls_insecure_skip_verify
-      keepalive off
     }
     header_up Host client.happyflowlogistics.com
     header_up X-Forwarded-Host client.happyflowlogistics.com
@@ -35,7 +34,6 @@ http://client.hfl.felip.se {
       resolvers 1.1.1.1
       dial_timeout 3s
       tls_insecure_skip_verify
-      keepalive off
     }
     header_up Host client.happyflowlogistics.com
     header_up X-Forwarded-Host client.happyflowlogistics.com
