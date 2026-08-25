@@ -9,10 +9,6 @@ primary_region = 'lhr'
 [build]
   dockerfile = 'Dockerfile'
 
-[[mounts]]
-  source = 'caddy_data'
-  destination = '/data'
-
 [http_service]
   internal_port = 80
   force_https = true
